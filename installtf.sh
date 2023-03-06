@@ -19,6 +19,9 @@ szip=`sudo unzip ./terraform_${ver}_linux_amd64.zip -d /usr/local/bin/`
 
 echo "$(terraform -v)"
 
+tfl=`echo "export TF_LOG="DEBUG"" >> $HOME/.bashrc`
+tflp=`echo "export TF_LOG_PATH="./tf.log"" >> $HOME/.bashrc`
+
 }
 
 
