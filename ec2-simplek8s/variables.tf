@@ -1,18 +1,18 @@
 
 variable "region" {
 
-  default = "us-east-2"
+  default = "us-west-2"
 
 }
 
 variable "accesskey" {
   type = string
-
+  sensitive = true
 }
 
 variable "secretkey" {
   type = string
-
+  sensitive = true
 }
 
 variable "ami" {
@@ -39,17 +39,8 @@ variable "iam_instance_profile" {
 }
 variable "key_name" {
 
-  default = "YCStartup2018"
+  default = "AldoCloudKEY"
 
-}
-variable "priv_key_name" {
-
-  default = "./YCS.pem"
-
-}
-
-variable "mykey" {
-  type = string
 }
 
 variable "sec_name" {

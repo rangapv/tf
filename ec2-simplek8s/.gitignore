@@ -4,3 +4,4 @@ tf.log
 .terraform
 *.pem
 *.swp
+secret.tfvars

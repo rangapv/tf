@@ -43,8 +43,8 @@ resource "aws_instance" "app_server" {
     type     = "ssh"
     user     = "ubuntu"
     host     = self.public_ip
-    #private_key = "${file("./YCS.ppk")}" 
-    private_key = "${var.mykey}" 
+    private_key = "${file("./Aldo.pem")}" 
+    #private_key = "${var.mykey}" 
   }
 
 }
