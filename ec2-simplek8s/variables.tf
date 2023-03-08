@@ -17,8 +17,7 @@ variable "secretkey" {
 
 variable "ami" {
 
-  default = "ami-097a2df4ac947655f"
-
+   default = "ami-0735c191cf914754d"
 }
 
 variable "ins_type" {
@@ -32,11 +31,7 @@ variable "cpu_core" {
   default = 2 
 
 }
-variable "iam_instance_profile" {
 
-  default = "k8srole"
-
-}
 variable "key_name" {
 
   default = "AldoCloudKEY"
@@ -46,13 +41,27 @@ variable "key_name" {
 variable "sec_name" {
 
   default = "launch-wizard-1"
+}
+
+variable "sec_id" {
+
+ default = "sg-eaf37d92"
 
 }
+
 variable "user_data" {
 
   default = "./user1.sh"
 
 }
+
+variable "sub_id" {
+
+ default = "subnet-e44865bc"
+
+}
+
+
 variable "vol_size" {
 
   default = 10 
