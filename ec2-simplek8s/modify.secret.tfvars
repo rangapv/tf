@@ -1,0 +1,6 @@
+accesskey = "AKIA********"
+secretkey = "Upv*********"
+sec_name = "launch-wizard-1"
+sec_id = "sg-eaf37d92"
+sub_id = "subnet-e44865bc"
+ami = "ami-0735c191cf914754d"
