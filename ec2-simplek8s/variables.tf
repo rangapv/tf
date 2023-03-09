@@ -16,8 +16,7 @@ variable "secretkey" {
 }
 
 variable "ami" {
-
-   default = "ami-0735c191cf914754d"
+type = string
 }
 
 variable "ins_type" {
@@ -39,15 +38,13 @@ variable "key_name" {
 }
 
 variable "sec_name" {
-
-  default = "launch-wizard-1"
+type = string
 }
 
 variable "sec_id" {
-
- default = "sg-eaf37d92"
-
+type = string
 }
+
 
 variable "user_data" {
 
@@ -56,8 +53,7 @@ variable "user_data" {
 }
 
 variable "sub_id" {
-
- default = "subnet-e44865bc"
+type = string
 
 }
 
