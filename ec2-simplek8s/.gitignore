@@ -1,7 +1,10 @@
 terraform.tfstate
 tf.log
+tf.log*
 .terraform.lock.hcl
 .terraform
 *.pem
 *.swp
 secret.tfvars
+terraform.tfstate
+terraform.tfstate.*

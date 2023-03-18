@@ -25,30 +25,35 @@ resource "aws_instance" "app_server" {
   tags = {
     Name = "k8sMaster1"
   }
- 
+
   connection {
     type     = "ssh"
     user     = "ubuntu"
     host     = self.public_ip
-    private_key = "${file("./Aldo.pem")}" 
-    #private_key = "${var.mykey}" 
-  }
-  
-  provisioner "remote-exec" {
-  
+    private_key = file("${path.module}/Aldo3.pem") 
+ }
+
+ provisioner "remote-exec" {
+
    inline = [
     "#!/bin/bash",  
-    "mkdir simplek8s; cd simplek8s",
+    "mkdir simplek8s",
+    "cd simplek8s",
     "git init; git pull https://github.com/rangapv/Simplek8s.git",
     "./simpleccm.sh ${var.accesskey} ${var.secretkey}"
     ]
-
- }
+    # on_failure = continue
+ } 
 
 }
+
 
 output "instances" {
   value       = "${aws_instance.app_server.*.public_ip}"
   description = "PrivateIP address details"
 }
 
+output "file" {
+  value = fileexists("${path.module}/Aldo3.pem")
+  description = "To check if file is there"
+}
