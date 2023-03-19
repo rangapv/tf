@@ -9,6 +9,13 @@ provider "aws" {
 
 
 resource "aws_instance" "app_server" {
+  depends_on = [
+       aws_subnet.publicsubnetstf,
+       aws_security_group.vpc_security_tf
+     ]
+  count = length(var.server_names)
+  #name  = var.server_names[count.index]
+
   ami           = var.ami 
   instance_type = var.ins_type 
   associate_public_ip_address = "true"
@@ -17,13 +24,13 @@ resource "aws_instance" "app_server" {
   # security_groups = [ var.sec_name ]
   user_data = "${file("./user1.sh")}"
   #volume_size = var.vol_size
-  subnet_id = var.sub_id
+  subnet_id = aws_subnet.publicsubnetstf.id 
   root_block_device {
     volume_size = var.vol_size
   }
-  vpc_security_group_ids = [ var.sec_id, ] 
+  vpc_security_group_ids = [ aws_security_group.vpc_security_tf.id, ] 
   tags = {
-    Name = "k8sMaster1"
+    Name = var.server_names[count.index]
   }
 
   connection {
