@@ -45,6 +45,12 @@ variable "sec_id" {
 type = string
 }
 
+variable "server_names" {
+
+default = [ "k8smaster11", "k8sworker11" ]
+
+}
+
 
 variable "user_data" {
 
@@ -57,6 +63,16 @@ type = string
 
 }
 
+variable "public_snets" {
+
+type = string
+
+}
+variable "public_subnets" {
+
+type = string
+
+}
 
 variable "vol_size" {
 
