@@ -38,19 +38,20 @@ resource "aws_instance" "app_server" {
     user     = "ubuntu"
     host     = self.public_ip
     private_key = file("${path.module}/Aldo3.pem") 
- }
+  }
 
- provisioner "remote-exec" {
+  provisioner "file" {
+    source      = "./remote.sh"
+    destination = "/home/ubuntu/remote.sh"
+  }
 
-   inline = [
-    "#!/bin/bash",  
-    "mkdir simplek8s",
-    "cd simplek8s",
-    "git init; git pull https://github.com/rangapv/Simplek8s.git",
-    "./simpleccm.sh ${var.accesskey} ${var.secretkey}"
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ubuntu/remote.sh",
+      "./remote.sh ${var.accesskey} ${var.secretkey}",
     ]
     # on_failure = continue
- } 
+  } 
 
 }
 
