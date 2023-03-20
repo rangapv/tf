@@ -48,7 +48,7 @@ resource "aws_instance" "app_server" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ubuntu/remote.sh",
-      "./remote.sh ${var.accesskey} ${var.secretkey}",
+      "./remote.sh ${var.accesskey} ${var.secretkey}"
     ]
     # on_failure = continue
   } 
