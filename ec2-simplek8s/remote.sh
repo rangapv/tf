@@ -76,9 +76,7 @@ tag2s="$?"
 master() {
 
 mc1=`mkdir simplek8s`
-mc11=`cd simplek8s`
-mc2=`git init; git pull https://github.com/rangapv/Simplek8s.git`
-mc3=`./simpleccm.sh "$1" "$2"`
+mc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;./simpleccm.sh "$1" "$2"`
 }
 
 
@@ -93,9 +91,8 @@ de2=`aws ec2 describe-instances --region $str233 --filter "Name=tag:Name,Values=
 
 worker() {
 
-wc1=`mkdir simplek8s;cd simplek8s`
-wc2=`git init; git pull https://github.com/rangapv/Simplek8s.git`
-wc3=`./simplenodeccm.sh "$1" "$2"`
+wc1=`mkdir simplek8s`
+wc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;./simplenodeccm.sh "$1" "$2"`
 }
 
 
