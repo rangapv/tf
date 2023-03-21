@@ -128,7 +128,8 @@ then
 	       worker_scp
           else
 	       echo "Config file copied to the worker node from the master..proceed with components installs"
-          fi 
+               break
+	  fi 
         done
 
         worker "$1" "$2"
