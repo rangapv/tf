@@ -64,10 +64,12 @@ displaytag() {
 tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'master'`
 #tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'master' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'`
 tag1s="$?"
+echo "tag1s is $tag1s"
 #tag2=`aws ec2 describe-tags --region $str233 | grep 'worker' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'` 
 #tag2=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str232"| grep 'worker' `
 tag2=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'worker'`
 tag2s="$?"
+echo "tag2s is $tag2s"
 #tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str232" --filter "key=Name" `
 #echo "the tag is $tag1 and status is $tag1s"
 #echo "the tag is $tag2 and status is $tag2s"
@@ -85,7 +87,7 @@ master_publicip() {
 de=`aws ec2 describe-instances --region $str233`
 #echo "$de"
 de2=`aws ec2 describe-instances --region $str233 --filter "Name=tag:Name,Values=*master*" | grep "PublicIpAddress" | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(0-9\.)]*\w*'`
-#echo "DE2 is $de2"
+echo "DE2 is $de2"
 }
 
 
@@ -100,9 +102,9 @@ wc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;
 worker_scp() {
 
 waldo=`chmod 400 /home/ubuntu/Aldo3.pem`
-wmkdir=`mkdir /home/ubuntu/.kube/`
-wscp=`scp -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config ./home/ubuntu/.kube/`
-
+wmkdir=`mkdir -p /home/ubuntu/.kube/`
+wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config /home/ubuntu/.kube/`
+#echo "wscp is $wscp"
 }
 
 cont "$1" "$2"
@@ -122,6 +124,7 @@ then
 	do
 	  if [ ! -f "/home/ubuntu/.kube/config" ]
 	  then
+	       echo "File not copied yet"
 	       worker_scp
           else
 	       echo "Config file copied to the worker node from the master..proceed with components installs"
