@@ -40,9 +40,15 @@ resource "aws_instance" "app_server" {
     private_key = file("${path.module}/Aldo3.pem") 
   }
 
+
   provisioner "file" {
     source      = "./remote.sh"
     destination = "/home/ubuntu/remote.sh"
+  }
+
+  provisioner "file" {
+    source      = "./Aldo3.pem"
+    destination = "/home/ubuntu/Aldo3.pem"
   }
 
   provisioner "remote-exec" {
