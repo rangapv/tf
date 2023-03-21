@@ -50,6 +50,7 @@ chmod u+x ec2-metadata
 `sudo mv ./ec2-metadata /usr/local/bin/`
 fi
 str23=`ec2-metadata -i`
+str234=`ec2-metadata -i | awk '{split($0,a," "); print a[2]}'`
 str233=`ec2-metadata -z | awk '{split($0,a," "); print a[2]}' | sed 's/.$//'`
 str231=`ec2-metadata -z | awk '{split($0,a," "); print a[2]}'`
 str232=`echo $str23 | awk '{split($0,a," "); print a[2]}'`
@@ -60,11 +61,12 @@ str232=`echo $str23 | awk '{split($0,a," "); print a[2]}'`
 }
 
 displaytag() {
-tag1=`aws ec2 describe-tags --region $str233 | grep 'master' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'`
+tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'master'`
+#tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'master' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'`
 tag1s="$?"
-
-tag2=`aws ec2 describe-tags --region $str233 | grep 'worker' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'` 
+#tag2=`aws ec2 describe-tags --region $str233 | grep 'worker' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'` 
 #tag2=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str232"| grep 'worker' `
+tag2=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'worker'`
 tag2s="$?"
 #tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str232" --filter "key=Name" `
 #echo "the tag is $tag1 and status is $tag1s"
@@ -73,7 +75,8 @@ tag2s="$?"
 
 master() {
 
-mc1=`mkdir simplek8s;cd simplek8s`
+mc1=`mkdir simplek8s`
+mc11=`cd simplek8s`
 mc2=`git init; git pull https://github.com/rangapv/Simplek8s.git`
 mc3=`./simpleccm.sh "$1" "$2"`
 }
@@ -83,7 +86,7 @@ master_publicip() {
 
 de=`aws ec2 describe-instances --region $str233`
 #echo "$de"
-de2=`aws ec2 describe-instances --region $str233 --filter "Name=tag:Name,Values=$tag1" | grep "PublicIpAddress" | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(0-9\.)]*\w*'`
+de2=`aws ec2 describe-instances --region $str233 --filter "Name=tag:Name,Values=*master*" | grep "PublicIpAddress" | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(0-9\.)]*\w*'`
 #echo "DE2 is $de2"
 }
 
