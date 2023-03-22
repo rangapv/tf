@@ -116,7 +116,7 @@ fileflag="$3"
 sedo=`chmod 777 "$fileflag"`
 f1=`cat "$fileflag" | grep 'kubeadm join'`
 f2=`cat "$fileflag" | grep 'kubeadm join' | grep -o "[^ ]*$"`
-tg=" &"
+tg="&"
 gt="sudo "
 if [[ "$f2" = "\\" ]]
 then
@@ -130,7 +130,7 @@ else
 f44=$gt$f2$tg
 fi
 #echo "$f44"
-join=`$f44`
+join=`${f44}`
 joins="$?"
 
 }
