@@ -150,7 +150,7 @@ sec1="$5"
                $funcexe1 $filechk $filechk
           else
                echo "Config file copied to the worker node from the master..proceed with components installs"
-               "$funcexe2" "$acc1" "$sec1" "$filechk"
+               $funcexe2 $acc1 $sec1 $filechk
                break
           fi
         done
@@ -171,9 +171,9 @@ elif [[ (( $tag2s -eq 0 )) ]]
 then
 	echo "This is the Worker, Install k8s worker components"
         
-	while_check "/home/ubuntu/.kube/config"  worker_scp worker  "$1" "$2"
+	while_check "/home/ubuntu/.kube/config"  "worker_scp" "worker"  "$1" "$2"
        
-       	while_check "/home/ubuntu/simplek8s/flag.txt" worker_scp worker_join  "$1" "$2"
+       	while_check "/home/ubuntu/simplek8s/flag.txt" "worker_scp" "worker_join"  "$1" "$2"
 
 else
 	echo "Could not determine Master or Node so no k8s components are installed ..exiting k8s install"
