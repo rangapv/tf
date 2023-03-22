@@ -122,7 +122,7 @@ if [[ "$f2" = "\\" ]]
 then
 f3=`cat "$fileflag" | grep -A 2 'kubeadm join'`
 #echo "f2 is $f3"
-f4=$( echo $f3 | xargs )
+f4=$( echo $f3 | xargs tr -s ' ')
 f44=$gt$f4$tg
 #echo "f4 is $f4"
 #echo "f44 is $f44"
