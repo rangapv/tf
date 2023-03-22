@@ -92,9 +92,11 @@ echo "DE2 is $de2"
 
 
 worker() {
+ac1="$1"
+sc1="$2"
 
 wc1=`mkdir simplek8s`
-wc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;./simplenodeccm.sh "$1" "$2"`
+wc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;./simplenodeccm.sh "$ac1" "$sc1"`
 }
 
 
@@ -122,7 +124,7 @@ if [[ "$f2" = "\\" ]]
 then
 f3=`cat "$fileflag" | grep -A 2 'kubeadm join'`
 #echo "f2 is $f3"
-f4=$( echo $f3 | xargs tr -s ' ')
+f4=$( echo $f3 | xargs | tr -s ' ')
 f44=$gt$f4$tg
 #echo "f4 is $f4"
 #echo "f44 is $f44"
