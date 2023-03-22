@@ -103,8 +103,31 @@ worker_scp() {
 
 waldo=`chmod 400 /home/ubuntu/Aldo3.pem`
 wmkdir=`mkdir -p /home/ubuntu/.kube/`
-wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config /home/ubuntu/.kube/`
+wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:'/home/ubuntu/.kube/config /home/ubuntu/simplek8s/flag.txt' /home/ubuntu/.kube/ /home/ubuntu/simplek8s/`
+#wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config /home/ubuntu/.kube/`
 #echo "wscp is $wscp"
+}
+
+worker_join() {
+
+f1=`cat /home/ubuntu/simplek8s/flag.txt | grep 'kubeadm join'`
+f2=`cat /home/ubuntu/simplek8s/flag.txt | grep 'kubeadm join' | grep -o "[^ ]*$"`
+tg=" &"
+gt="sudo "
+if [[ "$f2" = "\\" ]]
+then
+f3=`cat flag.txt | grep -A 2 'kubeadm join'`
+#echo "f2 is $f3"
+f4=$( echo $f3 | xargs )
+f44=$gt$f4$tg
+#echo "f4 is $f4"
+#echo "f44 is $f44"
+else
+f44=$gt$f2$tg
+fi
+
+join=`$f44`
+joins="$?"
 }
 
 cont "$1" "$2"
@@ -133,6 +156,7 @@ then
         done
 
         worker "$1" "$2"
+	worker_join
 else
 	echo "Could not determine Master or Node so no k8s components are installed ..exiting k8s install"
 fi
