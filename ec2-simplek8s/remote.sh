@@ -103,20 +103,22 @@ worker_scp() {
 
 waldo=`chmod 400 /home/ubuntu/Aldo3.pem`
 wmkdir=`mkdir -p /home/ubuntu/.kube/`
-wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:'/home/ubuntu/.kube/config /home/ubuntu/simplek8s/flag.txt' /home/ubuntu/.kube/ /home/ubuntu/simplek8s/`
+wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config  /home/ubuntu/.kube/`
+wscp2=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/simplek8s/flag.txt /home/ubuntu/simplek8s/`
 #wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config /home/ubuntu/.kube/`
 #echo "wscp is $wscp"
+
 }
 
 worker_join() {
-
+sedo=`chmod 777 /home/ubuntu/simplek8s/flag.txt`
 f1=`cat /home/ubuntu/simplek8s/flag.txt | grep 'kubeadm join'`
 f2=`cat /home/ubuntu/simplek8s/flag.txt | grep 'kubeadm join' | grep -o "[^ ]*$"`
 tg=" &"
 gt="sudo "
 if [[ "$f2" = "\\" ]]
 then
-f3=`cat flag.txt | grep -A 2 'kubeadm join'`
+f3=`cat /home/ubuntu/simplek8s/flag.txt | grep -A 2 'kubeadm join'`
 #echo "f2 is $f3"
 f4=$( echo $f3 | xargs )
 f44=$gt$f4$tg
@@ -125,9 +127,10 @@ f44=$gt$f4$tg
 else
 f44=$gt$f2$tg
 fi
-
+#echo "$f44"
 join=`$f44`
 joins="$?"
+
 }
 
 cont "$1" "$2"
