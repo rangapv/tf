@@ -98,27 +98,29 @@ wc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;
 }
 
 
-
 worker_scp() {
+src1="$1"
+dest1="$2"
 
 waldo=`chmod 400 /home/ubuntu/Aldo3.pem`
 wmkdir=`mkdir -p /home/ubuntu/.kube/`
-wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config  /home/ubuntu/.kube/`
-wscp2=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/simplek8s/flag.txt /home/ubuntu/simplek8s/`
+wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:"$src1"  "$dest1"`
+#wscp2=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/simplek8s/flag.txt /home/ubuntu/simplek8s/`
 #wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config /home/ubuntu/.kube/`
 #echo "wscp is $wscp"
 
 }
 
 worker_join() {
-sedo=`chmod 777 /home/ubuntu/simplek8s/flag.txt`
-f1=`cat /home/ubuntu/simplek8s/flag.txt | grep 'kubeadm join'`
-f2=`cat /home/ubuntu/simplek8s/flag.txt | grep 'kubeadm join' | grep -o "[^ ]*$"`
+fileflag="$3"
+sedo=`chmod 777 "$fileflag"`
+f1=`cat "$fileflag" | grep 'kubeadm join'`
+f2=`cat "$fileflag" | grep 'kubeadm join' | grep -o "[^ ]*$"`
 tg=" &"
 gt="sudo "
 if [[ "$f2" = "\\" ]]
 then
-f3=`cat /home/ubuntu/simplek8s/flag.txt | grep -A 2 'kubeadm join'`
+f3=`cat "$fileflag" | grep -A 2 'kubeadm join'`
 #echo "f2 is $f3"
 f4=$( echo $f3 | xargs )
 f44=$gt$f4$tg
@@ -133,6 +135,28 @@ joins="$?"
 
 }
 
+while_check() {
+     
+filechk="$1"
+funcexe1="$2"
+funcexe2="$3"
+acc1="$4"
+sec1="$5"
+      	while :
+        do
+          if [ ! -f "$filechk"  ]
+          then
+               echo "File not copied yet"
+               $funcexe1 $filechk $filechk
+          else
+               echo "Config file copied to the worker node from the master..proceed with components installs"
+               "$funcexe2" "$acc1" "$sec1" "$filechk"
+               break
+          fi
+        done
+}
+
+
 cont "$1" "$2"
 hid
 displaytag
@@ -146,20 +170,11 @@ then
 elif [[ (( $tag2s -eq 0 )) ]]
 then
 	echo "This is the Worker, Install k8s worker components"
-	while : 
-	do
-	  if [ ! -f "/home/ubuntu/.kube/config" ]
-	  then
-	       echo "File not copied yet"
-	       worker_scp
-          else
-	       echo "Config file copied to the worker node from the master..proceed with components installs"
-               break
-	  fi 
-        done
+        
+	while_check "/home/ubuntu/.kube/config"  worker_scp worker  "$1" "$2"
+       
+       	while_check "/home/ubuntu/simplek8s/flag.txt" worker_scp worker_join  "$1" "$2"
 
-        worker "$1" "$2"
-	worker_join
 else
 	echo "Could not determine Master or Node so no k8s components are installed ..exiting k8s install"
 fi
