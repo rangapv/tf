@@ -48,15 +48,12 @@ resource "aws_instance" "app_server" {
   provisioner "file" {
     source      = "./${var.keypath}"
     destination = "./${var.keypath}"
-    #source      = "./Aldo3.pem"
-    #destination = "/home/ubuntu/Aldo3.pem"
   }
 
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ubuntu/remote.sh",
       "/home/ubuntu/remote.sh ${var.accesskey} ${var.secretkey} ${var.server_names[0]} ${var.server_names[count.index]} ${var.keypath}",
-      # "/home/ubuntu/remote.sh ${var.accesskey} ${var.secretkey} ${var.server_names[0]} ${var.server_names[count.index]}",
     ]
     # on_failure = continue
   } 
@@ -70,6 +67,6 @@ output "instances" {
 }
 
 output "file" {
-  value = fileexists("${path.module}/Aldo3.pem")
+  value = fileexists("${path.module}/${var.keypath}")
   description = "To check if file is there"
 }
