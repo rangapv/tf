@@ -139,7 +139,7 @@ fileflag="$3"
 sedo=`chmod 777 "$fileflag"`
 f1=`cat "$fileflag" | grep 'kubeadm join'`
 f2=`cat "$fileflag" | grep 'kubeadm join' | grep -o "[^ ]*$"`
-tg="&"
+tg=" &"
 gt="sudo "
 if [[ "$f2" = "\\" ]]
 then
