@@ -1,6 +1,5 @@
 #create ec2 instance
 
-
 provider "aws" {
   region = var.region 
   access_key = var.accesskey 
@@ -37,7 +36,7 @@ resource "aws_instance" "app_server" {
     type     = "ssh"
     user     = "ubuntu"
     host     = self.public_ip
-    private_key = file("${path.module}/Aldo3.pem") 
+    private_key = file("${path.module}/${var.keypath}") 
   }
 
 
@@ -47,14 +46,17 @@ resource "aws_instance" "app_server" {
   }
 
   provisioner "file" {
-    source      = "./Aldo3.pem"
-    destination = "/home/ubuntu/Aldo3.pem"
+    source      = "./${var.keypath}"
+    destination = "./${var.keypath}"
+    #source      = "./Aldo3.pem"
+    #destination = "/home/ubuntu/Aldo3.pem"
   }
 
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ubuntu/remote.sh",
-      "/home/ubuntu/remote.sh ${var.accesskey} ${var.secretkey}",
+      "/home/ubuntu/remote.sh ${var.accesskey} ${var.secretkey} ${var.server_names[0]} ${var.server_names[count.index]} ${var.keypath}",
+      # "/home/ubuntu/remote.sh ${var.accesskey} ${var.secretkey} ${var.server_names[0]} ${var.server_names[count.index]}",
     ]
     # on_failure = continue
   } 
