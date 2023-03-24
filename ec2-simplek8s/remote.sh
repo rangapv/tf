@@ -125,11 +125,7 @@ src1="$1"
 dest1="$2"
 key2="$3"
 #echo "Inside worker_scp $key2"
-<<<<<<< HEAD
 waldo=`chmod 400 ./$key2`
-=======
-waldo=`sudo chmod 400 ./$key`
->>>>>>> refs/remotes/origin/main
 wmkdir=`mkdir -p /home/ubuntu/.kube/`
 wscp=`scp -o StrictHostKeyChecking=accept-new -i ./$key2 ubuntu@$de2:"$src1"  "$dest1"`
 #wscp2=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/simplek8s/flag.txt /home/ubuntu/simplek8s/`
