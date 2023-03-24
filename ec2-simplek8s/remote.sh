@@ -61,18 +61,38 @@ str232=`echo $str23 | awk '{split($0,a," "); print a[2]}'`
 }
 
 displaytag() {
-tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'master'`
-#tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'master' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'`
-tag1s="$?"
-echo "tag1s is $tag1s"
+mast="$1"
+work="$2"
+#tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep '$mast'`
+tag=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep '$work' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'`
+echo "tag is $tag"
+tags="$?"
+echo "tags is $tags"
 #tag2=`aws ec2 describe-tags --region $str233 | grep 'worker' | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(a-z)]*\w*'` 
 #tag2=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str232"| grep 'worker' `
-tag2=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep 'worker'`
-tag2s="$?"
-echo "tag2s is $tag2s"
+#tag2=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str234" | grep '$work'`
+#tag2s="$?"
+#echo "tag2s is $tag2s"
 #tag1=`aws ec2 describe-tags --region $str233 --filter "Name=resource-id,Values=$str232" --filter "key=Name" `
 #echo "the tag is $tag1 and status is $tag1s"
 #echo "the tag is $tag2 and status is $tag2s"
+
+
+echo "mast is $mast"
+echo "work is $work"
+if [[ ("$mast" == "$work") && (( $tags -eq 0 )) ]]
+then
+        tag1s=0
+	tag2s=1
+elif [[ ("$mast" != "$work") && (( $tags -eq 0 )) ]]
+then
+	tag2s=0
+	tag1s=1
+else
+	echo "The server $work is not FOUND"
+	tag1s=1
+	tag2s=1
+fi
 }
 
 master() {
@@ -83,10 +103,10 @@ mc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;
 
 
 master_publicip() {
-
+valu1="$1"
 de=`aws ec2 describe-instances --region $str233`
 #echo "$de"
-de2=`aws ec2 describe-instances --region $str233 --filter "Name=tag:Name,Values=*master*" | grep "PublicIpAddress" | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(0-9\.)]*\w*'`
+de2=`aws ec2 describe-instances --region $str233 --filter "Name=tag:Name,Values=*$valu1*" | grep "PublicIpAddress" | awk '{split($0,a," "); print a[2]}'| grep -oh '\w*[(0-9\.)]*\w*'`
 echo "DE2 is $de2"
 }
 
@@ -103,10 +123,11 @@ wc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;
 worker_scp() {
 src1="$1"
 dest1="$2"
-
-waldo=`chmod 400 /home/ubuntu/Aldo3.pem`
+key2="$3"
+#echo "Inside worker_scp $key2"
+waldo=`sudo chmod 400 ./$key`
 wmkdir=`mkdir -p /home/ubuntu/.kube/`
-wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:"$src1"  "$dest1"`
+wscp=`scp -o StrictHostKeyChecking=accept-new -i ./$key2 ubuntu@$de2:"$src1"  "$dest1"`
 #wscp2=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/simplek8s/flag.txt /home/ubuntu/simplek8s/`
 #wscp=`scp -o StrictHostKeyChecking=accept-new -i /home/ubuntu/Aldo3.pem ubuntu@$de2:/home/ubuntu/.kube/config /home/ubuntu/.kube/`
 #echo "wscp is $wscp"
@@ -144,12 +165,13 @@ funcexe1="$2"
 funcexe2="$3"
 acc1="$4"
 sec1="$5"
+key1="$6"
       	while :
         do
           if [ ! -f "$filechk"  ]
           then
                echo "File not copied yet"
-               $funcexe1 $filechk $filechk
+               $funcexe1 $filechk $filechk $key1
           else
                echo "Config file copied to the worker node from the master..proceed with components installs"
                $funcexe2 $acc1 $sec1 $filechk
@@ -161,8 +183,8 @@ sec1="$5"
 
 cont "$1" "$2"
 hid
-displaytag
-master_publicip
+displaytag "$3" "$4"
+master_publicip "$3"
 
 if [[ (( $tag1s -eq 0 )) ]]
 then
@@ -173,9 +195,9 @@ elif [[ (( $tag2s -eq 0 )) ]]
 then
 	echo "This is the Worker, Install k8s worker components"
         
-	while_check "/home/ubuntu/.kube/config"  "worker_scp" "worker"  "$1" "$2"
+	while_check "/home/ubuntu/.kube/config"  "worker_scp" "worker"  "$1" "$2" "$5" 
        
-       	while_check "/home/ubuntu/simplek8s/flag.txt" "worker_scp" "worker_join"  "$1" "$2"
+       	while_check "/home/ubuntu/simplek8s/flag.txt" "worker_scp" "worker_join"  "$1" "$2" "$5"
 
 else
 	echo "Could not determine Master or Node so no k8s components are installed ..exiting k8s install"
