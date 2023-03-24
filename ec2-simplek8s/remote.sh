@@ -153,7 +153,9 @@ else
 f44=$gt$f2$tg
 fi
 #echo "$f44"
-join=`${f44}`
+
+echo $f44 > ft
+source ./ft
 joins="$?"
 
 }
