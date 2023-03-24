@@ -155,7 +155,8 @@ fi
 #echo "$f44"
 
 echo $f44 > /home/ubuntu/ft
-source /home/ubuntu/ft
+`chmod 777 /home/ubuntu/ft`
+source <(/home/ubuntu/ft) > /dev/null 2>&1
 joins="$?"
 
 }
