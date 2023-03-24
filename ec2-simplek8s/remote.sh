@@ -154,8 +154,8 @@ f44=$gt$f2$tg
 fi
 #echo "$f44"
 
-echo $f44 > ft
-source ./ft
+echo $f44 > /home/ubuntu/ft
+source /home/ubuntu/ft
 joins="$?"
 
 }
