@@ -36,6 +36,11 @@ variable "key_name" {
   default = "AldoCloudKEY"
 
 }
+variable "keypath" {
+
+  type = string 
+
+}
 
 variable "sec_name" {
 type = string
