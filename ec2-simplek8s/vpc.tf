@@ -1,3 +1,4 @@
+# CrateVPC,Subnets,Internet Gateways, Security Group
 
 resource "aws_vpc" "awstfvpc" {
   cidr_block       = "${var.public_subnets}" 
@@ -34,8 +35,8 @@ resource "aws_route_table_association" "PublicRTassociation" {
 
 
 resource "aws_security_group" "vpc_security_tf" {
-  name        = "allow_tls"
-  description = "Allow TLS inbound traffic"
+  name        = "aws_tf_simplek8s"
+  description = "Secuirty Group for tf Instances inbound traffic"
   vpc_id      = aws_vpc.awstfvpc.id
 
   tags = {
@@ -65,6 +66,14 @@ resource "aws_vpc_security_group_ingress_rule" "ssh" {
   from_port   = 22 
   ip_protocol = "tcp"
   to_port     = 22 
+}
+resource "aws_vpc_security_group_ingress_rule" "dash" {
+  security_group_id = aws_security_group.vpc_security_tf.id
+
+  cidr_ipv4   = var.public_snets
+  from_port   = 30002 
+  ip_protocol = "tcp"
+  to_port     = 30002 
 }
 resource "aws_vpc_security_group_ingress_rule" "k8srule" {
   security_group_id = aws_security_group.vpc_security_tf.id
