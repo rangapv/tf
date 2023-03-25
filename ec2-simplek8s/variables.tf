@@ -42,17 +42,9 @@ variable "keypath" {
 
 }
 
-variable "sec_name" {
-type = string
-}
-
-variable "sec_id" {
-type = string
-}
-
 variable "server_names" {
 
-default = [ "k8smaster11", "k8sworker11" ]
+default = [ "k8smaster11", "k8sworker11", "k8sworker12" ]
 
 }
 
@@ -63,10 +55,6 @@ variable "user_data" {
 
 }
 
-variable "sub_id" {
-type = string
-
-}
 
 variable "public_snets" {
 
