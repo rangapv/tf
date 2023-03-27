@@ -32,8 +32,7 @@ variable "cpu_core" {
 }
 
 variable "key_name" {
-
-  default = "AldoCloudKEY"
+  type = string
 
 }
 variable "keypath" {
@@ -44,7 +43,7 @@ variable "keypath" {
 
 variable "server_names" {
 
-default = [ "k8smaster11", "k8sworker11", "k8sworker12" ]
+default = [ "k8smaster11", "k8sworker11" ]
 
 }
 

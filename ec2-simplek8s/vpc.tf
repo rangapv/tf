@@ -32,8 +32,6 @@ resource "aws_route_table_association" "PublicRTassociation" {
     route_table_id = aws_route_table.PublicRT.id
 }
 
-
-
 resource "aws_security_group" "vpc_security_tf" {
   name        = "aws_tf_simplek8s"
   description = "Secuirty Group for tf Instances inbound traffic"
@@ -83,13 +81,15 @@ resource "aws_vpc_security_group_ingress_rule" "k8srule" {
   ip_protocol = "tcp"
   to_port     = 6443 
 }
-resource "aws_vpc_security_group_ingress_rule" "all" {
+
+resource "aws_vpc_security_group_ingress_rule" "k8sdashrule" {
   security_group_id = aws_security_group.vpc_security_tf.id
 
   cidr_ipv4   = var.public_snets
-  ip_protocol = "-1"
+  from_port   = 8443 
+  ip_protocol = "tcp"
+  to_port     = 8443 
 }
-
 resource "aws_vpc_security_group_egress_rule" "egre_rule" {
   security_group_id = aws_security_group.vpc_security_tf.id
 
