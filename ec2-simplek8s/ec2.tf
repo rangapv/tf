@@ -18,6 +18,7 @@ resource "aws_instance" "app_server" {
   ami           = var.ami 
   instance_type = var.ins_type 
   associate_public_ip_address = "true"
+  iam_instance_profile = aws_iam_instance_profile.k8s_profile.id 
   #cpu_core_count = var.cpu_core
   key_name = var.key_name
   # security_groups = [ var.sec_name ]
