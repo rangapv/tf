@@ -1,13 +1,20 @@
 
 variable "region" {
+  type = string
+}
 
-  default = "us-east-2"
+variable "accesskey" {
+  type = string
+  sensitive = true
+}
 
+variable "secretkey" {
+  type = string
+  sensitive = true
 }
 
 variable "ami" {
-
-  default = "ami-097a2df4ac947655f"
+  type = string
 
 }
 
@@ -21,19 +28,17 @@ variable "cpu_core" {
   default = 2 
 
 }
-variable "iam_instance_profile" {
-
-  default = "k8srole"
-
-}
 variable "key_name" {
-
-  default = "YCStartup2018"
+  type = string
 
 }
-variable "sec_name" {
 
-  default = "launch-wizard-1"
+variable "subid" {
+  type = string
+}
+
+variable "sec_name" {
+ default = "rt" 
 
 }
 variable "user_data" {
@@ -45,4 +50,8 @@ variable "vol_size" {
 
   default = 10 
 
+}
+
+variable "vpcid" {
+  type = string
 }
