@@ -11,12 +11,19 @@ resource "aws_iam_policy" "policy2" {
   policy = "${file("./policy2.json")}"
 
 }
+
+resource "aws_iam_policy" "policy3" {
+#  path = "/users/rangapv/"
+  policy = "${file("./policy3.json")}"
+
+}
+
 resource "aws_iam_role" "k8s_role" {
   name = "k8s_role"
 #  path = "/users/rangapv/"
 #  assume_role_policy = aws_iam_policy.policy1, 
   assume_role_policy = "${file("./policy6.json")}"
-  managed_policy_arns = [ aws_iam_policy.policy1.arn, aws_iam_policy.policy2.arn ]
+  managed_policy_arns = [ aws_iam_policy.policy1.arn, aws_iam_policy.policy2.arn, aws_iam_policy.policy3.arn ]
   tags = {
     tag-key = "k8s-tf-role"
   }
