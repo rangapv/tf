@@ -7,5 +7,8 @@ tf.log*
 *.swp
 secret.tfvars
 secrets.tfvars
+secrets.tfvars*
+secrets.tfvars.*
+secret.tfvars.*
 terraform.tfstate
 terraform.tfstate.*
