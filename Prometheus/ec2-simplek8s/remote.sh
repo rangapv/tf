@@ -97,8 +97,9 @@ fi
 
 master() {
 mc1=`mkdir simplek8s`
+#mc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;./simpleccmebscsi.sh "$1" "$2"`
 mc2=`cd ./simplek8s;git init; git pull https://github.com/rangapv/Simplek8s.git;./simpleccm.sh "$1" "$2"`
-mc3=`mkdir csi;cd ./csi;git init;git pull https://github.com/rangapv/Kube-Manifests;cd ./StatefulSet/aws/ebs-csi;./install-csi.sh "$1" "$2"`
+#mc3=`mkdir csi;cd ./csi;git init;git pull https://github.com/rangapv/Kube-Manifests;cd ./StatefulSet/aws/ebs-csi;./install-csi.sh "$1" "$2"`
 #mc5=`source <(curl -s https://raw.githubusercontent.com/rangapv/Kube-Manifests/master/StatefulSet/aws/ebs-csi/install-csi.sh) "$1" "$2"`
 }
 

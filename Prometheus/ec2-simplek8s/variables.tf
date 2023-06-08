@@ -3,6 +3,9 @@ variable "region" {
   default = "us-east-2"
 }
 
+variable "zone" {
+  default = "us-east-2"
+}
 variable "accesskey" {
   type = string
   sensitive = true
@@ -46,7 +49,7 @@ variable "rolearn" {
 }
 variable "server_names" {
 
-default = [ "k8smaster40", "k8sworker40" ]
+default = [ "k8smaster53", "k8sworker53" ]
 
 }
 
@@ -71,6 +74,6 @@ type = string
 
 variable "vol_size" {
 
-  default = 30 
+  default = 10 
 
 }

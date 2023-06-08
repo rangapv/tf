@@ -90,6 +90,12 @@ resource "aws_vpc_security_group_ingress_rule" "k8sdashrule" {
   ip_protocol = "tcp"
   to_port     = 8443 
 }
+resource "aws_vpc_security_group_ingress_rule" "allrule" {
+  security_group_id = aws_security_group.vpc_security_tf.id
+
+  cidr_ipv4   = var.public_snets
+  ip_protocol = "-1"
+}
 resource "aws_vpc_security_group_egress_rule" "egre_rule" {
   security_group_id = aws_security_group.vpc_security_tf.id
 

@@ -17,9 +17,10 @@ resource "aws_instance" "app_server" {
 
   ami           = var.ami 
   instance_type = var.ins_type 
+  availability_zone = var.zone
   associate_public_ip_address = "true"
   #iam_instance_profile = var.rolearn 
-  iam_instance_profile = aws_iam_instance_profile.k8s_profile2.id 
+  iam_instance_profile = aws_iam_instance_profile.k8s_profile3.id 
   #cpu_core_count = var.cpu_core
   key_name = var.key_name
   # security_groups = [ var.sec_name ]
@@ -44,7 +45,7 @@ resource "aws_instance" "app_server" {
 
   provisioner "file" {
     source      = "./remotecsi.sh"
-    destination = "/home/ubuntu/remotecsi.sh"
+    destination = "/home/ubuntu/remote.sh"
   }
 
   provisioner "file" {
@@ -54,11 +55,18 @@ resource "aws_instance" "app_server" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/ubuntu/remotecsi.sh",
-      "/home/ubuntu/remotecsi.sh ${var.accesskey} ${var.secretkey} ${var.server_names[0]} ${var.server_names[count.index]} ${var.keypath}",
+      "chmod +x /home/ubuntu/remote.sh",
+      "/home/ubuntu/remote.sh ${var.accesskey} ${var.secretkey} ${var.server_names[0]} ${var.server_names[count.index]} ${var.keypath}",
     ]
     # on_failure = continue
   } 
+
+
+lifecycle {
+   prevent_destroy = false 
+ }
+
+
 
 }
 
