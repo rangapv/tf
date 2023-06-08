@@ -33,15 +33,20 @@ variable "key_name" {
   default = "YCStartup2018" 
 
 }
+
 variable "keypath" {
 
   type = string 
 
 }
+variable "rolearn" {
 
+  type = string 
+  default = "dummy"
+}
 variable "server_names" {
 
-default = [ "k8smaster14", "k8sworker14" ]
+default = [ "k8smaster40", "k8sworker40" ]
 
 }
 
