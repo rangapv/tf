@@ -17,22 +17,3 @@ line23="HostbasedAcceptedKeyTypes\ \+ssh\-rsa"
 line24="AuthorizedKeysFile\ \ \ \ \  \.ssh\/authorized\_keys\ \.ssh\/authorized\_keys2"
 sudo sed -i "/$line20/a$line2\n$line21\n$line22\n$line23\n$line24" $f1
 sudo systemctl restart ssh
-cat > /home/ubuntu/cr1.sh << EOF
-#!/usr/bin/env bash
-while (true)
-do
-        {
-        pid1=\`pidof /usr/bin/dpkg\`
-        if [[ ( ! -z "\$pid1" ) ]]
-        then
-        ki1=\`sudo kill -9 \$pid1\`
-        pid2=\`sudo rm -r /var/lib/dpkg/lock\`
-        pid3=\`sudo rm -r /var/lib/dpkg/lock-frontend\`
-        else
-                break
-        fi
-        }
-done
-EOF
-chmod 777 /home/ubuntu/cr1.sh
-(crontab -l 2>/dev/null || true; echo "*/1 * * * * /home/ubuntu/cr1.sh") | crontab -
